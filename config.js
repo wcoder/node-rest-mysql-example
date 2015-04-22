@@ -8,6 +8,6 @@ module.exports = {
 
 	dbHost: 'localhost',
 	dbUser: 'root',
-	dbPassword: 'root',
+	dbPassword: '',
 	dbName: 'mysql'
 };
