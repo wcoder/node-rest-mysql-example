@@ -3,7 +3,7 @@ var config = require('./config.js');
 var connection;
 
 function startConnection () {
-	if (connection != null && connection.state !== 'disconnected') return;
+	if (connection !== null && connection.state !== 'disconnected') return;
 
 	connection = mysql.createConnection({
 		host: config.dbHost,
@@ -15,13 +15,13 @@ function startConnection () {
 	// The server is either down
 	// or restarting (takes a while sometimes).
 	connection.connect(function (err) {
-		console.log('MYSQL [connected].')
-		
+		console.log('MYSQL [connected].');
+
 		if (err) {
 			console.log('MYSQL [error]:', err);
 
 			if (err.code === 'ECONNREFUSED') {
-				console.log('MYSQL [server not found].')
+				console.log('MYSQL [server not found].');
 			} else {
 				// We introduce a delay before attempting to reconnect,
 				// to avoid a hot loop, and to allow our node script to
@@ -47,7 +47,7 @@ function startConnection () {
 			throw err;
 		}
 	});
-};
+}
 
 
 startConnection();
@@ -62,7 +62,7 @@ module.exports = {
 
 			connection.query(sql, callback);
 		} else {
-			callback(new Error('MYSQL [no connection]'))
+			callback(new Error('MYSQL [no connection]'));
 		}
 	}
 };
