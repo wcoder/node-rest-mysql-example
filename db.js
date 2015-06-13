@@ -1,25 +1,27 @@
 var mysql = require('mysql');
 var config = require('./config.js');
 var connection;
-
+ 
 function startConnection () {
-	if (connection !== null && connection.state !== 'disconnected') return;
-
+	if (!!connection &&
+		connection.state !== 'protocol_error' &&
+		connection.state !== 'disconnected') return;
+ 
 	connection = mysql.createConnection({
 		host: config.dbHost,
 		user: config.dbUser,
 		password: config.dbPassword,
 		database: config.dbName
 	});
-
+ 
 	// The server is either down
 	// or restarting (takes a while sometimes).
 	connection.connect(function (err) {
 		console.log('MYSQL [connected].');
-
+ 
 		if (err) {
 			console.log('MYSQL [error]:', err);
-
+ 
 			if (err.code === 'ECONNREFUSED') {
 				console.log('MYSQL [server not found].');
 			} else {
@@ -31,13 +33,13 @@ function startConnection () {
 			}
 		}
 	});
-
+ 
 	connection.on('error', function (err) {
 		console.log('MYSQL [error]:', err);
-
+ 
 		if (err.code === 'PROTOCOL_CONNECTION_LOST') {
 			console.log('MYSQL [disconected].');
-
+ 
 			// Connection to the MySQL server is usually
 			// lost due to either server restart, or a
 			// connnection idle timeout (the wait_timeout
@@ -48,18 +50,17 @@ function startConnection () {
 		}
 	});
 }
-
-
+ 
+ 
 startConnection();
-
+ 
 module.exports = {
-	connection: connection,
 	query: function (sql, callback) {
 		startConnection();
-
+ 
 		if (connection.state !== 'disconnected') {
 			console.log('MYSQL [query]: %s', sql);
-
+ 
 			connection.query(sql, callback);
 		} else {
 			callback(new Error('MYSQL [no connection]'));
