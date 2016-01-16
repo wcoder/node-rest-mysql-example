@@ -5,18 +5,18 @@
   "main": "server.js",
   "dependencies": {
     "express": "~4.11.2",
-    "mysql": "~2.5.4"
+    "node-mysql-connect": "^1.1.1"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/wcoder/node-rest-mysql-example.git"
   },
-  "author": "Evgeniy Pakalo",
+  "author": "Yauheni Pakala",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/wcoder/node-rest-mysql-example/issues"
